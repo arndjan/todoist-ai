@@ -1,10 +1,16 @@
 import { z } from 'zod'
 import type { TodoistTool } from '../todoist-tool.js'
 import { mapComment, mapProject, mapTask } from '../tool-helpers.js'
-import { CommentSchema, ProjectSchema, SectionSchema, TaskSchema } from '../utils/output-schemas.js'
+import {
+    CommentSchema,
+    LabelSchema,
+    ProjectSchema,
+    SectionSchema,
+    TaskSchema,
+} from '../utils/output-schemas.js'
 import { ToolNames } from '../utils/tool-names.js'
 
-const ObjectTypes = ['task', 'project', 'comment', 'section'] as const
+const ObjectTypes = ['task', 'project', 'comment', 'section', 'label'] as const
 
 const ArgsSchema = {
     type: z.enum(ObjectTypes).describe('The type of object to fetch.'),
@@ -15,14 +21,14 @@ const OutputSchema = {
     type: z.enum(ObjectTypes).describe('The type of object fetched.'),
     id: z.string().describe('The ID of the fetched object.'),
     object: z
-        .union([TaskSchema, ProjectSchema, CommentSchema, SectionSchema])
+        .union([TaskSchema, ProjectSchema, CommentSchema, SectionSchema, LabelSchema])
         .describe('The fetched object data.'),
 }
 
 const fetchObject = {
     name: ToolNames.FETCH_OBJECT,
     description:
-        'Fetch a single task, project, comment, or section by its ID. Use this when you have a specific object ID and want to retrieve its full details.',
+        'Fetch a single task, project, comment, section, or label by its ID. Use this when you have a specific object ID and want to retrieve its full details.',
     parameters: ArgsSchema,
     outputSchema: OutputSchema,
     annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true },
@@ -88,6 +94,24 @@ const fetchObject = {
                             type,
                             id,
                             object: mappedSection,
+                        },
+                    }
+                }
+                case 'label': {
+                    const label = await client.getLabel(id)
+                    const mappedLabel = {
+                        id: label.id,
+                        name: label.name,
+                        color: label.color as import('@doist/todoist-api-typescript').ColorKey,
+                        order: label.order,
+                        isFavorite: label.isFavorite,
+                    }
+                    return {
+                        textContent: `Found label: ${mappedLabel.name} • id=${mappedLabel.id} • color=${mappedLabel.color}`,
+                        structuredContent: {
+                            type,
+                            id,
+                            object: mappedLabel,
                         },
                     }
                 }

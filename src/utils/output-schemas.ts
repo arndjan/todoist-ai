@@ -67,6 +67,17 @@ const SectionSchema = z.object({
 })
 
 /**
+ * Schema for a label object returned by tools
+ */
+const LabelSchema = z.object({
+    id: z.string().describe('The unique ID of the label.'),
+    name: z.string().describe('The name of the label.'),
+    color: ColorOutputSchema,
+    order: z.number().nullable().describe('The display order of the label (null if unsorted).'),
+    isFavorite: z.boolean().describe('Whether the label is marked as favorite.'),
+})
+
+/**
  * Schema for a file attachment in a comment
  */
 const AttachmentSchema = z.object({
@@ -143,6 +154,7 @@ export {
     CollaboratorSchema,
     CommentSchema,
     FailureSchema,
+    LabelSchema,
     ProjectSchema,
     SectionSchema,
     TaskSchema,

@@ -11,6 +11,7 @@ import {
     registerTool,
 } from './mcp-helpers.js'
 import { addComments } from './tools/add-comments.js'
+import { addLabels } from './tools/add-labels.js'
 import { addProjects } from './tools/add-projects.js'
 import { addSections } from './tools/add-sections.js'
 import { addTasks } from './tools/add-tasks.js'
@@ -21,6 +22,7 @@ import { fetchObject } from './tools/fetch-object.js'
 import { findActivity } from './tools/find-activity.js'
 import { findComments } from './tools/find-comments.js'
 import { findCompletedTasks } from './tools/find-completed-tasks.js'
+import { findLabels } from './tools/find-labels.js'
 import { findProjectCollaborators } from './tools/find-project-collaborators.js'
 import { findProjects } from './tools/find-projects.js'
 import { findSections } from './tools/find-sections.js'
@@ -34,6 +36,7 @@ import { projectManagement } from './tools/project-management.js'
 import { projectMove } from './tools/project-move.js'
 import { search } from './tools/search.js'
 import { updateComments } from './tools/update-comments.js'
+import { updateLabels } from './tools/update-labels.js'
 import { updateProjects } from './tools/update-projects.js'
 import { updateSections } from './tools/update-sections.js'
 import { updateTasks } from './tools/update-tasks.js'
@@ -191,6 +194,11 @@ function getMcpServer({
     registerTool({ tool: addComments, ...toolArgs })
     registerTool({ tool: findComments, ...toolArgs })
     registerTool({ tool: updateComments, ...toolArgs })
+
+    // Label management tools
+    registerTool({ tool: addLabels, ...toolArgs })
+    registerTool({ tool: findLabels, ...toolArgs })
+    registerTool({ tool: updateLabels, ...toolArgs })
 
     // Activity and audit tools
     registerTool({ tool: findActivity, ...toolArgs })

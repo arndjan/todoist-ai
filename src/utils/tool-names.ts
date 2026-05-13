@@ -31,6 +31,11 @@ export const ToolNames = {
     UPDATE_COMMENTS: 'update-comments',
     FIND_COMMENTS: 'find-comments',
 
+    // Label management tools
+    ADD_LABELS: 'add-labels',
+    UPDATE_LABELS: 'update-labels',
+    FIND_LABELS: 'find-labels',
+
     // Assignment and collaboration tools
     FIND_PROJECT_COLLABORATORS: 'find-project-collaborators',
     MANAGE_ASSIGNMENTS: 'manage-assignments',
